@@ -16,6 +16,7 @@ The following features are planned for the backend:
 - Receipes generation
 - Store shopping list
 - HTTPS conf
+- Rate limiter setup 
 
 To evolve
 

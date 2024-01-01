@@ -18,8 +18,8 @@ export class UsersService {
     const newUser = new this.userModel(user);
     return newUser.save();
   }
-  async findOne(username: string): Promise<User | undefined> {
-    return this.userModel.findOne({ username }).exec();
+  async findOne(email: string): Promise<User | undefined> {
+    return this.userModel.findOne({ email }).exec();
   }
 
 }
