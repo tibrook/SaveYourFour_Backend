@@ -15,6 +15,7 @@ The following features are planned for the backend:
 - Store personnal receipes notes in database
 - Receipes generation
 - Store shopping list
+- HTTPS conf
 
 To evolve
 
