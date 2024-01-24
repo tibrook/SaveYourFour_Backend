@@ -1,10 +1,7 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, IsArray,IsOptional } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateUserDto {
-  @IsNotEmpty()
-  @IsString()
-  username: string;
-
   @IsNotEmpty()
   @IsString()
   lastName: string;
@@ -12,6 +9,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   firstName: string;
+
+  @IsArray()
+  @IsOptional()
+  houses?: Types.ObjectId[];
 
    @IsNotEmpty()
   @IsString()
