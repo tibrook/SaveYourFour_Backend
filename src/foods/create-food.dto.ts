@@ -6,7 +6,6 @@ export class CreateFoodDto {
     @IsString()
     name: string;
 
-    @IsString()
     @IsNotEmpty()
     houseId: Types.ObjectId; 
 

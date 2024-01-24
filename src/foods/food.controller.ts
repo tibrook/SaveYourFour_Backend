@@ -8,20 +8,22 @@ export interface CustomRequest extends Request {
     user: any; 
 }
 
-@Controller('foods')
+@Controller('house/:houseId/foods')
 export class FoodController {
     constructor(private foodService: FoodService) {}
 
     @UseGuards(AuthGuard('jwt'))
     @Post()
-    async addFood(@Body() createFoodDto: CreateFoodDto, @Req() req: CustomRequest): Promise<Food> {
-        const userId = req.user.userId;
-        return this.foodService.addFood(createFoodDto, userId);
+    async addFood(
+        @Body() createFoodDto: CreateFoodDto,
+        @Param('houseId') houseId: string
+    ): Promise<Food> {
+        return this.foodService.addFood(createFoodDto, houseId);
     }
 
     @Get()
-    async getAllFoods(): Promise<Food[]> {
-        return this.foodService.findAll();
+    async getAllFoods(@Param('houseId') houseId: string): Promise<Food[]> {
+        return this.foodService.findAllByHouse(houseId);
     }
 
     @Put(':id')

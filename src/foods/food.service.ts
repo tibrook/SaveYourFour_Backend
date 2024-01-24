@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Food } from './food.entity';
@@ -16,20 +16,21 @@ export class FoodService {
         try {
             const newFood = new this.foodModel({
                 ...createFoodDto,
-                houseId: new Types.ObjectId(houseId) 
+                houseId,
             });
             return await newFood.save();
         } catch (error) {
-             // Handle MongoDB duplicate key error (error code 11000). This occurs when a food item with an existing name is added.
-            if (error instanceof MongoError && error.code === 11000) {
-                throw new ConflictException('A food with the same name already exists.');
-            }
-            throw error;
+            console.error('Error in food creation:', error);
+        if (error.code === 11000) {
+            throw new ConflictException(`A food with the name "${createFoodDto.name}" already exists in the specified house.`);
+        } else {
+            throw new InternalServerErrorException('Error.');
+        }
         }
     }
 
-    async findAll(): Promise<Food[]> {
-        return this.foodModel.find().exec();
+    async findAllByHouse(houseId: string): Promise<Food[]> {
+        return this.foodModel.find({ houseId: houseId }).exec(); 
     }
 
     async updateFood(id: string, foodData: Food): Promise<Food> {

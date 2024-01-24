@@ -9,7 +9,7 @@ export class Food extends Document {
     
     @IsNotEmpty()
     @IsString()
-    @Prop({ required: true, unique: true  })
+    @Prop({ required: true })
     name: string;
 
     @IsString()
@@ -42,3 +42,4 @@ export class Food extends Document {
 }
 
 export const FoodSchema = SchemaFactory.createForClass(Food);
+FoodSchema.index({ name: 1, houseId: 1 }, { unique: true });
