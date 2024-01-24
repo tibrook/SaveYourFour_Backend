@@ -4,8 +4,8 @@ import { IsNotEmpty, IsBoolean, IsDate, IsString } from 'class-validator';
 
 @Schema()
 export class Food extends Document {
-    @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
-    userId: Types.ObjectId;
+    @Prop({ required: true, type: Types.ObjectId, ref: 'House' })
+    houseId: Types.ObjectId;
     
     @IsNotEmpty()
     @IsString()

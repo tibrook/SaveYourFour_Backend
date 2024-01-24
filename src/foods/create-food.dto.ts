@@ -1,10 +1,14 @@
-import { IsNotEmpty, IsBoolean, IsDateString, IsString } from 'class-validator';
-
+import { IsNotEmpty, IsBoolean, IsDateString, IsString  } from 'class-validator';
+import { Types } from 'mongoose';
 export class CreateFoodDto {
 
     @IsNotEmpty()
     @IsString()
     name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    houseId: Types.ObjectId; 
 
     @IsString()
     description: string;

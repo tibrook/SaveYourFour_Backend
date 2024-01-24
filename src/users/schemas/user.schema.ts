@@ -7,7 +7,9 @@ export const UserSchema = new mongoose.Schema({
   password: String,
   firstName: String,
   lastName: String,
-  houses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'House' }]
+  houses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'House' }],
+  type: { type: String, default: 'user' },
+  verified: { type: Boolean, default: false }
 });
 
 // User type interface
@@ -16,6 +18,8 @@ export interface User extends mongoose.Document {
   password: string;
   firstName: String;
   lastName: String;
+  type: string;
+  verified: boolean;
   houses: House[];
 }
   

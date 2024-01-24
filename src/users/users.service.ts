@@ -24,9 +24,11 @@ export class UsersService {
     }
 
     // Manage new user
-    const newUser = new this.userModel(createUserDto);
-    await newUser.save();
-
+    const newUser = new this.userModel({
+      ...createUserDto,
+      type: 'user', 
+      verified: false 
+    });
     // Create default house
     const defaultHouse = new this.houseModel({ name: 'Default House', users: [newUser._id] });
     await defaultHouse.save();
