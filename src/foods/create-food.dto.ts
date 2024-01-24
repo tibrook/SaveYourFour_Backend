@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsBoolean, IsDateString, IsString } from 'class-validator';
 
 export class CreateFoodDto {
+
     @IsNotEmpty()
     @IsString()
     name: string;

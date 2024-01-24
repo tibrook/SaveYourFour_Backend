@@ -1,9 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { IsNotEmpty, IsBoolean, IsDate, IsString } from 'class-validator';
 
 @Schema()
 export class Food extends Document {
+    @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+    userId: Types.ObjectId;
+    
     @IsNotEmpty()
     @IsString()
     @Prop({ required: true, unique: true  })

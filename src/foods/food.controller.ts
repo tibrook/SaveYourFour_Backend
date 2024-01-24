@@ -1,15 +1,22 @@
-import { Controller, Post, Get, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller,UseGuards, Post, Get, Put, Delete, Body, Param, Req } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { Food } from './food.entity';
 import { CreateFoodDto } from './create-food.dto';
+import { Request } from 'express';
+import { AuthGuard } from '@nestjs/passport';
+export interface CustomRequest extends Request {
+    user: any; 
+}
 
 @Controller('foods')
 export class FoodController {
     constructor(private foodService: FoodService) {}
 
+    @UseGuards(AuthGuard('jwt'))
     @Post()
-    async addFood(@Body() createFoodDto: CreateFoodDto): Promise<Food> {
-        return this.foodService.addFood(createFoodDto);
+    async addFood(@Body() createFoodDto: CreateFoodDto, @Req() req: CustomRequest): Promise<Food> {
+        const userId = req.user.userId;
+        return this.foodService.addFood(createFoodDto, userId);
     }
 
     @Get()
