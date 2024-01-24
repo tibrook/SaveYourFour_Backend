@@ -16,9 +16,10 @@ This backend for the Easy Cooking project is implemented using TypeScript and Ne
 - Receipes generation
 - Store shopping list
 - HTTPS conf
-- Rate limiter setup 
+- Rate limiter setup
 
 ### Users
+
 - `id`: Unique identifier.
 - `name`: User's last name.
 - `firstName`: User's first name.
@@ -27,6 +28,7 @@ This backend for the Easy Cooking project is implemented using TypeScript and Ne
 - `role`: User's role (admin/user/test).
 
 ### Ingredients
+
 - `id`: Unique identifier.
 - `name`: Ingredient name.
 - `quantity`: Available quantity.
@@ -35,6 +37,7 @@ This backend for the Easy Cooking project is implemented using TypeScript and Ne
 - `urgency`: Urgency level (1-10).
 
 ### Recipes
+
 - `id`: Unique identifier.
 - `name`: Recipe name.
 - `description`: Recipe description.
@@ -44,11 +47,13 @@ This backend for the Easy Cooking project is implemented using TypeScript and Ne
 - `favorites`: Favorite status (true/false).
 
 ### Weekly Recipes
+
 - `id`: Unique identifier.
 - `weekNumber`: Week number for the menu.
 - `weekMenu`: Object containing the weekly menu details.
 
 ### Shopping List
+
 - `id`: Unique identifier.
 - `shoppingList`: Object containing items on the shopping list.
 
