@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsBoolean, IsDate, IsString } from 'class-validator';
+import { IsNotEmpty, IsBoolean, IsDateString, IsString } from 'class-validator';
 
 export class CreateFoodDto {
     @IsNotEmpty()
@@ -20,9 +20,9 @@ export class CreateFoodDto {
     @IsBoolean()
     favorite: boolean;
 
-    @IsDate()
+    @IsDateString()
     expirationDate: Date;
 
-    @IsDate()
+    @IsDateString()
     bestBeforeDate: Date;
 }

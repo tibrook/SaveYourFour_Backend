@@ -1,16 +1,24 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Food } from './food.entity';
 import { CreateFoodDto } from './create-food.dto';
+import { MongoError } from 'mongodb';
 
 @Injectable()
 export class FoodService {
     constructor(@InjectModel(Food.name) private foodModel: Model<Food>) {}
 
     async addFood(createFoodDto: CreateFoodDto): Promise<Food> {
-        const newFood = new this.foodModel(createFoodDto);
-        return newFood.save();
+        try {
+            const newFood = new this.foodModel(createFoodDto);
+            return await newFood.save();
+        } catch (error) {
+            if (error instanceof MongoError && error.code === 11000) {
+                throw new ConflictException('An food with the same name already exists.');
+            }
+            throw error;
+        }
     }
 
     async findAll(): Promise<Food[]> {

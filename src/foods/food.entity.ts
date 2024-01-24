@@ -6,7 +6,7 @@ import { IsNotEmpty, IsBoolean, IsDate, IsString } from 'class-validator';
 export class Food extends Document {
     @IsNotEmpty()
     @IsString()
-    @Prop({ required: true })
+    @Prop({ required: true, unique: true  })
     name: string;
 
     @IsString()
