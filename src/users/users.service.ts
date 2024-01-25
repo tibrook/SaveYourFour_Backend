@@ -4,6 +4,7 @@ import { Model, Document } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { House } from '../house/schemas/house.schema'; // Assurez-vous que le chemin d'accès est correct
 import { CreateUserDto } from './dto/create-user.dto'; // Importez CreateUserDto
+import { HouseService } from '../house/house.service';
 
 // Create user document type
 type UserDocument = User & Document;
@@ -13,7 +14,8 @@ type HouseDocument = House & Document;
 export class UsersService {
   constructor(
     @InjectModel('User') private userModel: Model<UserDocument>,
-    @InjectModel('House') private houseModel: Model<HouseDocument> 
+    @InjectModel('House') private houseModel: Model<HouseDocument> ,
+    private houseService: HouseService
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -29,9 +31,8 @@ export class UsersService {
       type: 'user', 
       verified: false 
     });
-    // Create default house
-    const defaultHouse = new this.houseModel({ name: 'Default House', users: [newUser._id] });
-    await defaultHouse.save();
+    const defaultHouse = await this.houseService.createHouse(newUser._id);
+    console.log(defaultHouse)
 
     // Associate new user to default house
     newUser.houses = [defaultHouse._id];
