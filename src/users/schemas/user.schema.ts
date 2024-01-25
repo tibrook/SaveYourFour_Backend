@@ -7,9 +7,10 @@ export const UserSchema = new mongoose.Schema({
   password: String,
   firstName: String,
   lastName: String,
-  houses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'House' }],
   type: { type: String, default: 'user' },
-  verified: { type: Boolean, default: false }
+  verified: { type: Boolean, default: false },
+  houses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'House' }]
+
 });
 
 // User type interface
