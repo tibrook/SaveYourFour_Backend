@@ -9,8 +9,12 @@ export class HouseService {
     @InjectModel('House') private readonly houseModel: Model<House>,
   ) {}
 
-   async getAllInventoryCategories(houseId: string): Promise<House[]> {
-    return await this.houseModel.findById(houseId).populate('categories');
+  async getAllInventoryCategories(houseId: string): Promise<string[]> {
+    const house = await this.houseModel.findById(houseId).exec();
+    if (!house) {
+      throw new Error('Inventory House not found');
+    }
+    return house.inventoryCategory;
   }
   async createHouse(userId: string): Promise<House> {
     const defaultCategories = [
@@ -23,24 +27,40 @@ export class HouseService {
       users: [userId],
       inventoryCategory: defaultCategories
     });
-    console.log('*** House Service - ***' , newHouse)
+    console.log('*** House Service - ***' ,newHouse)
     await newHouse.save();
     return newHouse;
   }
   // Ajouter une nouvelle catégorie
-  // async addInventoryCategory(houseId: string, categoryName: string, categoryDescription?: string): Promise<Category> {
-  //   const newCategory = new this.categoryModel({ name: categoryName, description: categoryDescription });
-  //   const category = await newCategory.save();
-  //   await this.houseModel.findByIdAndUpdate(houseId, { $push: { categories: category } });
-  //   return category;
-  // }
+  async addInventoryCategory(houseId: string, categoryName: string): Promise<House> {
+    return this.houseModel.findByIdAndUpdate(
+      houseId,
+      { $push: { inventoryCategory: categoryName } },
+      { new: true }
+    ).exec();
+  }
 
   // Mettre à jour une catégorie
-  // async updateInventoryCategory(houseId: string, categoryId: string, categoryName: string, categoryDescription?: string): Promise<Category> {
-  //   return this.categoryModel.findByIdAndUpdate(categoryId, { name: categoryName, description: categoryDescription }, { new: true });
-  // }
+  async updateInventoryCategory(houseId: string, oldCategoryName: string, newCategoryName: string): Promise<House> {
+    const house = await this.houseModel.findById(houseId).exec();
+    if (!house) {
+      throw new Error('House not found');
+    }
+  
+    const categoryIndex = house.inventoryCategory.indexOf(oldCategoryName);
+    if (categoryIndex === -1) {
+      throw new Error('Category not found');
+    }
+  
+    house.inventoryCategory[categoryIndex] = newCategoryName;
+    return house.save();
+  }
 
-  // async deleteInventoryCategory(houseId: string, categoryId: string): Promise<any> {
-  //   return this.categoryModel.findByIdAndDelete(categoryId);
-  // }
+  async deleteInventoryCategory(houseId: string, categoryName: string): Promise<House> {
+    return this.houseModel.findByIdAndUpdate(
+      houseId,
+      { $pull: { inventoryCategory: categoryName } },
+      { new: true }
+    ).exec();
+  }
 }
