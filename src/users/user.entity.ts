@@ -6,12 +6,14 @@ export const UserSchema = new mongoose.Schema({
   lastName: String,
   email: String,
   password: String,
+  preferredLanguage: String,
   houses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'House' }]
 });
 
 export interface User extends mongoose.Document {
   id: string;
   firstName: string;
+  preferredLanguage: string;
   lastName: string;
   email: string;
   password: string;
