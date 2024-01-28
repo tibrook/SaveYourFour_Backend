@@ -10,6 +10,7 @@ export class HouseController {
   @Get('/:houseId/inventory/categories')
   async getAllInventoryCategories(@Param('houseId') houseId: string, @Res() res: Response) {
     try {
+      console.log('House.controller - getAllInventoryCategories')
       const categories = await this.houseService.getAllInventoryCategories(houseId);
       if (categories) {
         res.status(HttpStatus.OK).json({

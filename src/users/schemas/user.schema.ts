@@ -17,8 +17,8 @@ export const UserSchema = new mongoose.Schema({
 export interface User extends mongoose.Document {
   email: string;
   password: string;
-  firstName: String;
-  lastName: String;
+  firstName: string;
+  lastName: string;
   type: string;
   verified: boolean;
   houses: House[];

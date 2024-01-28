@@ -4,12 +4,14 @@ import {
   Body,
   ConflictException,
   HttpException,
-  HttpStatus,
+  HttpStatus,UseGuards ,
   UsePipes,
+  UnauthorizedException,Req,Get,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // Import your JWT Auth Guard
 
 @Controller('users')
 export class UsersController {
@@ -27,5 +29,22 @@ export class UsersController {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  @UseGuards(JwtAuthGuard) 
+  @Get('settings')
+  async getUserSettings(@Req() request) {
+    // Assuming you have a way to get the user ID from the request, e.g., a session or a token
+    const userId = request.user.userId;
+    if (!userId) {
+      throw new UnauthorizedException('User ID not found in request');
+    }
+
+    const userSettings = await this.usersService.getUserSettings(userId);
+    if (!userSettings) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    return userSettings;
   }
 }

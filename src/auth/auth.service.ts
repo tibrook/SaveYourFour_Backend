@@ -16,14 +16,14 @@ export class AuthService {
         const user = await this.usersService.findOne(email);
         if (user && user.password === pass) {
             this.logger.log(`Login successful for user: ${email}`);
-            const { password, ...result } = user;
-            return result;
+            return user;
         }
         this.logger.warn(`Login attempt failed for user: ${email}`);
         return null;
     }
     async login(user: any) {
-        const payload = { email: user.email, sub: user.userId };
+        const payload = { email: user.email, sub: user.id };
+        console.log(payload)
         return {
         access_token: this.jwtService.sign(payload),
         };
