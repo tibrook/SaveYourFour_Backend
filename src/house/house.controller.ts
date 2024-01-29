@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, HttpStatus, Res } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, HttpStatus, Res, UsePipes, ValidationPipe} from '@nestjs/common';
 import {HouseService} from './house.service';
 import {CreateInventoryCategoryDto,UpdateInventoryCategoryDto } from './inventory.dto'
 import express, {Request, Response} from 'express';
@@ -32,6 +32,7 @@ export class HouseController {
     }
   }
   @Post('/:houseId/inventory/categories')
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   async addInventoryCategory(@Param('houseId') houseId: string, @Body() categoryData: CreateInventoryCategoryDto, @Res() res: Response) {
     try {
       const newCategory = await this.houseService.addInventoryCategory(houseId, categoryData.name);

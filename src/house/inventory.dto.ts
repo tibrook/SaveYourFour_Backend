@@ -1,6 +1,11 @@
+import { IsNotEmpty, IsString } from 'class-validator';
+
 export class CreateInventoryCategoryDto {
-    readonly name: string;
-  }
+  @IsNotEmpty()
+  @IsString()
+  readonly name: string;
+}
+
   
   export class UpdateInventoryCategoryDto {
     readonly oldName: string;

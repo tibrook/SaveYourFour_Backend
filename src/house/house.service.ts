@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { House } from './house.entity';
@@ -11,13 +11,23 @@ export class HouseService {
 
   async getAllInventoryCategories(houseId: string): Promise<string[]> {
     const house = await this.houseModel.findById(houseId).exec();
+    console.log(houseId)
+    console.log(house)
+
     if (!house) {
-      throw new Error('Inventory House not found');
+      throw new NotFoundException('Inventory House not found');
+    }else{
+      console.log('House found')
     }
     return house.inventoryCategory;
   }
   async createHouse(userId: string): Promise<House> {
-    const defaultCategories = [
+    const defaultFrenchCategories = [
+      'Fruits & Légumes', 'Viandes & Poissons', 'Produits Laitiers', 
+      'Céréales & Féculents', 'Épices & Condiments', 'Produits Secs', 
+      'Conserves & Bocaux', 'Boissons'
+    ];
+    const defaultEnglishCategories = [
       'Fruits & Légumes', 'Viandes & Poissons', 'Produits Laitiers', 
       'Céréales & Féculents', 'Épices & Condiments', 'Produits Secs', 
       'Conserves & Bocaux', 'Boissons'
@@ -25,7 +35,7 @@ export class HouseService {
     const newHouse = new this.houseModel({
       name: 'Default House',
       users: [userId],
-      inventoryCategory: defaultCategories
+      inventoryCategory: defaultFrenchCategories
     });
     console.log('*** House Service - ***' ,newHouse)
     await newHouse.save();
